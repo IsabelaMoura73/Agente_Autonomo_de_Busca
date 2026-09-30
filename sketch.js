@@ -6,6 +6,7 @@ const NOME = { B: 'Largura', D: 'Profundidade', U: 'Custo Uniforme', G: 'Gulosa'
 
 let grid, agente, comida, algo = 'A', estado;
 let g, pai, fronteira, fechados, caminho, idx, prog, score = 0;
+let flashR = 0;
 
 function setup() {
   createCanvas(COLS * S, ROWS * S + 110);
@@ -155,10 +156,11 @@ function desenhar() {
   desenharHUD();
 }
 function keyPressed() {
-  let k = String.fromCharCode(keyCode);
-  if (k === 'R') novoMapa();
+  let k = key.toUpperCase();
+  if (k === 'R') { novoMapa(); flashR = 12; }
   else if (NOME[k]) { algo = k; iniciarBusca(); }
 }
+
 function desenharHUD() {
   let y0 = ROWS * S;
   noStroke();
@@ -169,34 +171,32 @@ function desenharHUD() {
   textSize(12);
   fill(200, 60, 130);
   text('Aperte no teclado:', 14, y0 + 29);
-  let ordem = ['B', 'D', 'U', 'G', 'A'];
-  for (let i = 0; i < ordem.length; i++) {
-    let k = ordem[i];
-    let x = 140 + i * 132;
-    let ativo = (k === algo);
+  let teclas = ['B', 'D', 'U', 'G', 'A', 'R'];
+  let nomes = { B: NOME.B, D: NOME.D, U: NOME.U, G: NOME.G, A: NOME.A, R: 'Novo mapa' };
+  for (let i = 0; i < teclas.length; i++) {
+    let k = teclas[i];
+    let x = 140 + i * 130;
+    let ativo = (k === 'R') ? flashR > 0 : (k === algo);
     tecla(k, x, y0 + 16, ativo);
     textAlign(LEFT, CENTER);
     textSize(12);
     fill(ativo ? color(200, 40, 120) : color(140, 80, 110));
-    text(NOME[k], x + 34, y0 + 29);
+    text(nomes[k], x + 34, y0 + 29);
   }
-
-  textAlign(RIGHT, CENTER);
-  textSize(15);
-  fill(200, 60, 130);
-  text('🥕 ' + score, COLS * S - 14, y0 + 29);
+  if (flashR > 0) flashR--;
 
   textAlign(LEFT, CENTER);
   textSize(12);
   legenda([[185, 140, 235], 'Visitados'], 14, y0 + 58);
   legenda([[255, 80, 160], 'Fronteira'], 124, y0 + 58);
   legenda([[255, 205, 60], 'Caminho'], 234, y0 + 58);
-  tecla('R', COLS * S - 130, y0 + 45, false);
+  textAlign(RIGHT, CENTER);
+  textSize(15);
+  fill(200, 60, 130);
+  text('🥕 Comidas: ' + score, COLS * S - 14, y0 + 58);
+
   textAlign(LEFT, CENTER);
   textSize(12);
-  fill(140, 80, 110);
-  text('novo mapa', COLS * S - 96, y0 + 58);
-
   legenda([COR[0], 'Obstáculo'], 14, y0 + 82);
   legenda([COR[1], 'Areia (10)'], 124, y0 + 82);
   legenda([COR[2], 'Atoleiro (50)'], 234, y0 + 82);

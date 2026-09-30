@@ -8,7 +8,7 @@ let grid, agente, comida, algo = 'A', estado;
 let g, pai, fronteira, fechados, caminho, idx, prog, score = 0;
 
 function setup() {
-  createCanvas(COLS * S, ROWS * S + 30);
+  createCanvas(COLS * S, ROWS * S + 110);
   frameRate(30);
   novoMapa();
 }
@@ -152,13 +152,54 @@ function desenhar() {
     ay = lerp(agente.y, caminho[idx].y, prog);
   }
   text('🐰', ax * S + S / 2, ay * S + S / 2 + 2);
-  fill(200, 60, 130);
-  textSize(15);
-  textAlign(LEFT, CENTER);
-  text(`${NOME[algo]}  |  Comidas: ${score}  |  B D U G A = trocar, R = novo mapa`, 10, ROWS * S + 15);
+  desenharHUD();
 }
 function keyPressed() {
   let k = String.fromCharCode(keyCode);
   if (k === 'R') novoMapa();
   else if (NOME[k]) { algo = k; iniciarBusca(); }
+}
+function desenharHUD() {
+  let y0 = ROWS * S;
+  noStroke();
+  fill(255, 255, 255, 200);
+  rect(0, y0 + 8, COLS * S, 96, 14);
+
+  let ordem = ['B', 'D', 'U', 'G', 'A'];
+  textAlign(CENTER, CENTER);
+  textSize(13);
+  for (let i = 0; i < ordem.length; i++) {
+    let k = ordem[i];
+    let x = 14 + i * 140;
+    let ativo = (k === algo);
+    fill(ativo ? color(255, 80, 160) : color(255, 214, 232));
+    rect(x, y0 + 16, 132, 26, 13);
+    fill(ativo ? color(255) : color(200, 60, 130));
+    text(k + ' · ' + NOME[k], x + 66, y0 + 29);
+  }
+
+  textAlign(RIGHT, CENTER);
+  textSize(15);
+  fill(200, 60, 130);
+  text('🥕 ' + score, COLS * S - 14, y0 + 29);
+
+  textAlign(LEFT, CENTER);
+  textSize(12);
+  legenda([[185, 140, 235], 'Visitados'], 14, y0 + 58);
+  legenda([[255, 80, 160], 'Fronteira'], 124, y0 + 58);
+  legenda([[255, 205, 60], 'Caminho'], 234, y0 + 58);
+  fill(200, 60, 130);
+  text('R = novo mapa', COLS * S - 100, y0 + 58);
+
+  legenda([COR[0], 'Obstáculo'], 14, y0 + 82);
+  legenda([COR[1], 'Areia (10)'], 124, y0 + 82);
+  legenda([COR[2], 'Atoleiro (50)'], 234, y0 + 82);
+  legenda([COR[3], 'Água (100)'], 364, y0 + 82);
+}
+
+function legenda(item, x, y) {
+  fill(item[0]);
+  rect(x, y - 7, 14, 14, 4);
+  fill(120, 60, 100);
+  text(item[1], x + 20, y);
 }

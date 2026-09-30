@@ -165,17 +165,20 @@ function desenharHUD() {
   fill(255, 255, 255, 200);
   rect(0, y0 + 8, COLS * S, 96, 14);
 
+  textAlign(LEFT, CENTER);
+  textSize(12);
+  fill(200, 60, 130);
+  text('Aperte no teclado:', 14, y0 + 29);
   let ordem = ['B', 'D', 'U', 'G', 'A'];
-  textAlign(CENTER, CENTER);
-  textSize(13);
   for (let i = 0; i < ordem.length; i++) {
     let k = ordem[i];
-    let x = 14 + i * 140;
+    let x = 140 + i * 132;
     let ativo = (k === algo);
-    fill(ativo ? color(255, 80, 160) : color(255, 214, 232));
-    rect(x, y0 + 16, 132, 26, 13);
-    fill(ativo ? color(255) : color(200, 60, 130));
-    text(k + ' · ' + NOME[k], x + 66, y0 + 29);
+    tecla(k, x, y0 + 16, ativo);
+    textAlign(LEFT, CENTER);
+    textSize(12);
+    fill(ativo ? color(200, 40, 120) : color(140, 80, 110));
+    text(NOME[k], x + 34, y0 + 29);
   }
 
   textAlign(RIGHT, CENTER);
@@ -188,8 +191,11 @@ function desenharHUD() {
   legenda([[185, 140, 235], 'Visitados'], 14, y0 + 58);
   legenda([[255, 80, 160], 'Fronteira'], 124, y0 + 58);
   legenda([[255, 205, 60], 'Caminho'], 234, y0 + 58);
-  fill(200, 60, 130);
-  text('R = novo mapa', COLS * S - 100, y0 + 58);
+  tecla('R', COLS * S - 130, y0 + 45, false);
+  textAlign(LEFT, CENTER);
+  textSize(12);
+  fill(140, 80, 110);
+  text('novo mapa', COLS * S - 96, y0 + 58);
 
   legenda([COR[0], 'Obstáculo'], 14, y0 + 82);
   legenda([COR[1], 'Areia (10)'], 124, y0 + 82);
@@ -202,4 +208,18 @@ function legenda(item, x, y) {
   rect(x, y - 7, 14, 14, 4);
   fill(120, 60, 100);
   text(item[1], x + 20, y);
+}
+
+function tecla(letra, x, y, ativo) {
+  noStroke();
+  fill(ativo ? color(200, 40, 120) : color(225, 170, 195));
+  rect(x, y + 3, 26, 26, 6);
+  stroke(ativo ? color(255, 80, 160) : color(225, 170, 195));
+  fill(ativo ? color(255, 80, 160) : color(255));
+  rect(x, y, 26, 26, 6);
+  noStroke();
+  fill(ativo ? color(255) : color(200, 60, 130));
+  textAlign(CENTER, CENTER);
+  textSize(14);
+  text(letra, x + 13, y + 13);
 }

@@ -1,8 +1,8 @@
 const COLS = 32, ROWS = 20, S = 34, HUD = 150;
 // tipo 0 = obstáculo, 1 = areia, 2 = atoleiro, 3 = água
 const CUSTO = [Infinity, 10, 50, 100];
-const COR = [[48, 50, 70], [238, 218, 180], [206, 160, 175], [140, 180, 235]];
-const FUNDO = [20, 22, 32];
+const COR = [[34, 0, 50], [238, 218, 180], [206, 160, 175], [140, 180, 235]];
+const FUNDO = [80, 0, 109];
 const NOME = { B: 'Largura', D: 'Profundidade', U: 'Custo Uniforme', G: 'Gulosa', A: 'A*' };
 const ESTRUTURA = { B: 'Fila', D: 'Pilha', U: 'Lista Prioridade', G: 'Lista Prioridade', A: 'Lista Prioridade' };
 
@@ -204,7 +204,7 @@ function desenhar() {
       fill(COR[grid[x][y]]);
       rect(x * S, y * S, S, S, 5);
       if (grid[x][y] === 0) { // pedra
-        noStroke(); fill(82, 84, 110);
+        noStroke(); fill(72, 20, 98);
         ellipse(x * S + S / 2, y * S + S / 2 + 2, S * 0.62, S * 0.5);
         stroke(FUNDO);
       }
@@ -289,9 +289,9 @@ function desenharCenoura(cx, cy, s) {
 function desenharHUD() {
   let y0 = ROWS * S;
   noStroke();
-  fill(30, 33, 48);
+  fill(64, 0, 88);
   rect(0, y0, COLS * S, HUD);
-  fill(60, 64, 90);
+  fill(124, 40, 166);
   rect(0, y0, COLS * S, 2);
 
   let teclas = ['B', 'D', 'U', 'G', 'A', 'R'];
@@ -303,21 +303,21 @@ function desenharHUD() {
     tecla(k, x, y0 + 14, ativo);
     textAlign(LEFT, CENTER);
     textSize(17);
-    fill(ativo ? color(255, 222, 130) : color(200, 205, 225));
+    fill(ativo ? color(255, 222, 130) : color(225, 215, 245));
     text(nomes[k], x + 42, y0 + 30);
   }
   if (flashR > 0) flashR--;
 
   textAlign(LEFT, CENTER);
   textSize(17);
-  fill(200, 204, 228);
+  fill(225, 200, 245);
   text('Estrutura:', 16, y0 + 76);
   text('Função:', 290, y0 + 76);
   fill(240);
   text(ESTRUTURA[algo], 104, y0 + 76);
   text(formula(), 360, y0 + 76);
   if (algo === 'A') {
-    fill(200, 204, 228);
+    fill(225, 200, 245);
     text('Peso da heurística (− / +):', 610, y0 + 76);
     fill(255, 222, 130);
     text(nf(W, 1, 1), 830, y0 + 76);
@@ -327,7 +327,7 @@ function desenharHUD() {
   fill(255, 190, 140);
   text('Cenouras: ' + score, COLS * S - 16, y0 + 66);
   textSize(14);
-  fill(200, 204, 228);
+  fill(225, 200, 245);
   text('Expandidos: ' + fechados.size, COLS * S - 16, y0 + 90);
 
   textAlign(LEFT, CENTER);
@@ -351,9 +351,9 @@ function legenda(cor, rotulo, x, y) {
 
 function tecla(letra, x, y, ativo) {
   noStroke();
-  fill(ativo ? color(200, 165, 80) : color(12, 14, 22));
+  fill(ativo ? color(200, 165, 80) : color(34, 0, 50));
   rect(x, y + 4, 32, 32, 7);
-  fill(ativo ? color(255, 222, 130) : color(64, 70, 100));
+  fill(ativo ? color(255, 222, 130) : color(112, 30, 152));
   rect(x, y, 32, 32, 7);
   fill(ativo ? color(70, 60, 85) : color(245));
   textAlign(CENTER, CENTER);

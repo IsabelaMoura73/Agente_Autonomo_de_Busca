@@ -104,8 +104,7 @@ Os parâmetros ficam no objeto `AG` no início da seção do algoritmo genético
 ```
 ├── index.html      # carrega o p5.js e o sketch
 ├── sketch.js       # mapa, buscas, algoritmo genético, animação e interface
-├── imagens/
-│   └── demo.png    # print usado no topo deste README
+├── foto-agente.jpeg       # print usado no topo deste README  
 ├── relatorio/
 │   └── relatorio_post_mortem.tex   # relatório de post-mortem em LaTeX
 └── README.md

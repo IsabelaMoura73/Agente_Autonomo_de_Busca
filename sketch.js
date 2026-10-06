@@ -34,39 +34,39 @@ class Pilha {
 // Custo Uniforme / Gulosa / A*: heap binário mínimo.
 // prio(n) devolve [f, desempate]; empate em f sai o de menor h (o mais perto da comida).
 class ListaPrioridade {
-  constructor(prio) { this.h = []; this.prio = prio; }
-  menor(i, j) {
-    let a = this.h[i], b = this.h[j];
-    return a.f < b.f || (a.f === b.f && a.d < b.d);
+  constructor(prio) { this.H = [null]; this.cnt = 0; this.prio = prio; }
+  menor(a, b) { return a.f < b.f || (a.f === b.f && a.d < b.d); }
+  // Desce o nó i até achar sua posição (sift-down).
+  bottomUpHeapify(i) {
+    let H = this.H, v = H[i];
+    while (2 * i <= this.cnt) {
+      let j = 2 * i;
+      if (j < this.cnt && this.menor(H[j + 1], H[j])) j++; // menor filho
+      if (!this.menor(H[j], v)) break;
+      H[i] = H[j]; i = j;
+    }
+    H[i] = v;
   }
-  troca(i, j) { [this.h[i], this.h[j]] = [this.h[j], this.h[i]]; }
+  // Sobe o nó i enquanto for menor que o pai
+  topDownHeapify(i) {
+    let H = this.H, v = H[i];
+    while (i > 1 && this.menor(v, H[i >> 1])) { H[i] = H[i >> 1]; i >>= 1; }
+    H[i] = v;
+  }
   push(n) {
     let [f, d] = this.prio(n);
-    this.h.push({ n, f, d });
-    let i = this.h.length - 1;
-    while (i > 0) {
-      let p = (i - 1) >> 1;
-      if (!this.menor(i, p)) break;
-      this.troca(i, p); i = p;
-    }
+    this.H[++this.cnt] = { n, f, d };
+    this.topDownHeapify(this.cnt);
   }
   pop() {
-    let topo = this.h[0], ult = this.h.pop();
-    if (this.h.length > 0) {
-      this.h[0] = ult;
-      let i = 0;
-      for (;;) {
-        let e = 2 * i + 1, d = e + 1, m = i;
-        if (e < this.h.length && this.menor(e, m)) m = e;
-        if (d < this.h.length && this.menor(d, m)) m = d;
-        if (m === i) break;
-        this.troca(i, m); i = m;
-      }
-    }
+    let topo = this.H[1];
+    this.H[1] = this.H[this.cnt];
+    this.H.length = this.cnt--;
+    if (this.cnt > 0) this.bottomUpHeapify(1);
     return topo.n;
   }
-  get length() { return this.h.length; }
-  itens() { return this.h.map(e => e.n); }
+  get length() { return this.cnt; }
+  itens() { return this.H.slice(1).map(e => e.n); }
 }
 
 function novaFronteira() {

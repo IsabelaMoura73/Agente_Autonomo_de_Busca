@@ -20,23 +20,15 @@ Projeto da disciplina de Sistemas Inteligentes, Grupo 7.
 
 O projeto usa [p5.js](https://p5js.org/) carregado por CDN. Não é preciso instalar nada, mas é preciso estar conectado à internet.
 
-**Opção 1: abrir direto no navegador**
+Não é preciso rodar nenhum servidor: basta abrir o `index.html` no navegador. No terminal, dentro da pasta do projeto:
 
-1. Baixe ou clone o repositório.
-2. Abra o arquivo `index.html` no Chrome, Firefox ou Edge.
-
-**Opção 2: servidor local**
-
-- No VS Code, instale a extensão *Live Server*, clique com o botão direito em `index.html` e escolha **Open with Live Server**.
-- Ou, no terminal, dentro da pasta do projeto:
 ```bash
-  python -m http.server 8000
+open index.html        # macOS
+xdg-open index.html    # Linux
+start index.html       # Windows
 ```
-  e acesse `http://localhost:8000`.
 
-**Opção 3: editor online do p5.js**
-
-Acesse [editor.p5js.org](https://editor.p5js.org/), cole o conteúdo de `sketch.js` no arquivo `sketch.js` do editor e clique em ▶.
+Dependendo do seu SO, experimente também dar dois cliques no arquivo `index.html`.
 
 > Clique uma vez no canvas para que ele receba o foco do teclado.
 
